@@ -32,7 +32,7 @@ global.__STYLE_COLLECTOR_MODULES__ = [];
 global.__STYLE_COLLECTOR__ = '';
 
 var html = React.renderToString(<App />);
-var css = global.__STYLE_COLLECTOR__;
+var css = global.__STYLE_COLLECTOR__; // or global.__STYLE_COLLECTOR_FILES__['filename']
 
 data = data.replace('</head>', '<style id="css-style-collector-data">' + css + '</style></head>');
 // ...
