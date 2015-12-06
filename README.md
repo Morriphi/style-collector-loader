@@ -1,13 +1,18 @@
-# style-collector-loader
+# style-collector-component-loader
+
+Based on style-collector-loader (https://www.npmjs.com/package/style-collector-loader)
+
 Webpack loader to collect your CSS styles when you `React.renderToString(<App />)`.
 
 When doing server-side rendering, your do not want FOUC (flash of unstyled content). However, if you are using the CSS loader, your styles will not be loaded in the browser until your React application is mounted.
 
-To fix this problem, you can use the style-collector-loader to collect the CSS the client will need. Once the React application is loaded, you can remove it from the DOM.
+To fix this problem, you can use the style-collector-component-loader to collect the CSS the client will need. Once the React application is loaded, you can remove it from the DOM. 
+
+This module will collect styles by filename so you can choose which style to render in components.
 
 ## Install
-1. `npm i -S style-collector-loader`
-1. Set the style-collector loader on the server config (make sure the css-loader is just after)
+1. `npm i -S style-collector-component-loader`
+1. Set the style-collector-component loader on the server config (make sure the css-loader is just after)
 1. Reset the values before your renderToString
 1. Collect the CSS after renderToString and serve it
 1. Don't forgot to remove the style once React is loaded on the client
@@ -17,8 +22,8 @@ To fix this problem, you can use the style-collector-loader to collect the CSS t
 ```javascript
 // ...
 module.loaders = [
-  { test: /\.css$/, loader: 'style-collector!css' },
-  { test: /\.scss$/, loader: 'style-collector!css!sass' },
+  { test: /\.css$/, loader: 'style-collector-component!css' },
+  { test: /\.scss$/, loader: 'style-collector-component!css!sass' },
   { test: /\.(png|jpe?g)(\?.*)?$/, loader: 'url?limit=8192'},
   { test: /\.(svg|ttf|woff2?)(\?.*)?$/, loader: 'file'}
 ];
@@ -32,7 +37,7 @@ global.__STYLE_COLLECTOR_MODULES__ = [];
 global.__STYLE_COLLECTOR__ = '';
 
 var html = React.renderToString(<App />);
-var css = global.__STYLE_COLLECTOR__; // or global.__STYLE_COLLECTOR_FILES__['filename']
+var css = global.__STYLE_COLLECTOR_FILES__['css filename']
 
 data = data.replace('</head>', '<style id="css-style-collector-data">' + css + '</style></head>');
 // ...
